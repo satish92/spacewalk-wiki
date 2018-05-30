@@ -181,3 +181,32 @@ To fix, ensure that Java 1.8 is being used by default. If possible, consider uni
     # yum erase java-1.7.0-openjdk java-1.7.0-openjdk-devel java-1.7.0-openjdk-headless 
 
 And then restart Spacewalk services.
+
+### CentOS 7 yum update fails
+
+on CentOS 7 is you face yum update failure, there was a dependency error 
+
+Error: Package: spacewalk-oracle-2.7.4-1.el7.noarch (clone-spacewalk-2-7-centos74-1708-x86_64-20180401)
+           Requires: oracle-instantclient11.2-sqlplus
+Error: Package: oracle-instantclient-selinux-11.2.0.3-1.el7.noarch (clone-spacewalk-2-7-centos74-1708-x86_64-20180401)
+           Requires: oracle-instantclient11.2-basic
+Error: Package: spacewalk-oracle-2.7.4-1.el7.noarch (clone-spacewalk-2-7-centos74-1708-x86_64-20180401)
+           Requires: oracle-instantclient11.2-basic
+Error: Package: oracle-lib-compat-11.2.0.14-1.el7.x86_64 (clone-spacewalk-2-7-centos74-1708-x86_64-20180401)
+           Requires: oracle-instantclient11.2-sqlplus = 11.2.0.4.0
+Error: Package: oracle-instantclient-sqlplus-selinux-11.2.0.3-1.el7.noarch (clone-spacewalk-2-7-centos74-1708-x86_64-20180401)
+           Requires: oracle-instantclient11.2-sqlplus
+Error: Package: oracle-lib-compat-11.2.0.14-1.el7.x86_64 (clone-spacewalk-2-7-centos74-1708-x86_64-20180401)
+           Requires: oracle-instantclient11.2-basic = 11.2.0.4.0
+Error: spacewalk-oracle conflicts with spacewalk-postgresql-2.7.4-1.el7.noarch
+Error: Package: cx_Oracle-5.3-1.el7.x86_64 (clone-spacewalk-2-7-centos74-1708-x86_64-20180401)
+           Requires: oracle-instantclient11.2-basic = 11.2.0.4.0
+Error: spacewalk-postgresql conflicts with spacewalk-oracle-2.7.4-1.el7.noarch
+Error: spacewalk-dobby conflicts with spacewalk-oracle-2.7.4-1.el7.noarch
+
+
+remove geronimo-specs-poms and spacewalk-dobby packages, then try to update yum
+
+### /etc/sudoers file edit while upgrading spacewalk to 2.7
+
+spacewalk-upgrade will edit /etc/sudoers file it is removing couple of lines, so you might get parse error for that especially when you are tunning through ansible or terraform.
