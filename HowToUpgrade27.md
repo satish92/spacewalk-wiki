@@ -209,4 +209,23 @@ remove geronimo-specs-poms and spacewalk-dobby packages, then try to update yum
 
 ### /etc/sudoers file edit while upgrading spacewalk to 2.7
 
-spacewalk-upgrade will edit /etc/sudoers file it is removing couple of lines, so you might get parse error for that especially when you are tunning through ansible or terraform.
+spacewalk-upgrade will edit /etc/sudoers file it is removing couple of lines, so you might get parse error for that especially when you are running through ansible or terraform.
+
+when upgrading spacewalk from 2.6 to 2.7 spacewalk-upgrade will remove below lines from /etc/sudoers and it will include those lines in file named spacewalk located in /etc/sudoers.d (/etc/sudoers.d/spacewalk)
+
+## RHN specifics ##                                           <
+Cmnd_Alias CONFIG_RHN = /usr/sbin/rhn-sat-restart-silent,\    <
+                        /usr/bin/rhn-config-satellite.pl,\    <
+                        /usr/bin/rhn-bootstrap,\              <
+                        /usr/bin/rhn-ssl-tool,\               <
+                        /sbin/service taskomatic restart      <
+
+# The CONFIG_RHN commands are required for reconfiguration of <
+# running Red Hat Satellite.  They should be enabled for prop <
+# of the Red Hat Satellite.                                   <
+apache  ALL=(root)      NOPASSWD: CONFIG_RHN                  <
+tomcat  ALL=(root)      NOPASSWD: CONFIG_RHN                  <
+
+
+
+
